@@ -77,17 +77,27 @@ WebUtil.dirObj = function (obj, depth, parent) {
     return msg;
 };
 
-// Read a query string variable
-WebUtil.getQueryVar = function (name, defVal) {
+// Read a variable
+WebUtil.getVar = function (name, defVal, source) {
     "use strict";
     var re = new RegExp('.*[?&]' + name + '=([^&#]*)'),
-        match = document.location.href.match(re);
+        match = source.match(re);
     if (typeof defVal === 'undefined') { defVal = null; }
     if (match) {
         return decodeURIComponent(match[1]);
     } else {
         return defVal;
     }
+};
+
+// Read a query string variable
+WebUtil.getQueryVar = function (name, defVal) {
+    return WebUtil.getVar(name, defVal, document.location.href);
+};
+
+// Read a hash fragment variable
+WebUtil.getHashVar = function (name, defVal) {
+    return WebUtil.getVar(name, defVal, document.location.hash);
 };
 
 
